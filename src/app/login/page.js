@@ -6,7 +6,7 @@ export default function Home() {
 
         {/*<div className="">
             <div
-                className="relative rounded h-14 bg-gradient-to-r from-cyan-500 to-blue-500 dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert font-bold text-2xl font-bold"
+                className="relative rounded px-5 h-14 bg-gradient-to-r from-cyan-500 to-blue-500 dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert font-bold text-5xl font-bold"
             >
                 News Aggregator
             </div>
