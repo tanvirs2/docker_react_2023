@@ -29,3 +29,11 @@
 body {
   color: rgb(var(--foreground-rgb));
 }
+
+.custom-ts-switch:checked {
+  background-color: #22c55e; /* bg-green-500 */
+}
+
+.custom-ts-switch:checked ~ span:last-child {
+  --tw-translate-x: 1.75rem; /* translate-x-7 */
+}

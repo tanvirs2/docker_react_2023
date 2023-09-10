@@ -85,6 +85,28 @@ export default function UserProfile() {
                     </h1>
                     <p className="font-light text-gray-600 mt-3">Bucharest, Romania</p>
 
+
+                    <div className="mt-8 text-gray-500">
+
+                        <div className="p-5 ">
+                            <label className="flex items-center relative w-max mx-auto cursor-pointer select-none">
+                                <span className="text-lg font-bold mr-3">Personalized news feed</span>
+                                <input
+                                    type="checkbox"
+                                    className="custom-ts-switch appearance-none transition-colors cursor-pointer w-14 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 bg-red-500"
+                                />
+                                <span className="absolute font-medium text-xs uppercase right-1 text-white">
+                                OFF
+                            </span>
+                                <span className="absolute font-medium text-xs uppercase right-8 text-white">
+                                ON
+                            </span>
+                                <span className="w-7 h-7 right-7 absolute rounded-full transform transition-transform bg-gray-200"/>
+                            </label>
+                        </div>
+
+                    </div>
+
                     <div className="p-10 flex justify-center">
 
                         <FavoritePreference name="Source" datas={['photography', 'travel', 'winter']}/>
@@ -95,8 +117,7 @@ export default function UserProfile() {
 
                     </div>
 
-                    {/* <p className="mt-8 text-gray-500">Solution Manager - Creative Tim Officer</p>
-                    <p className="mt-2 text-gray-500">University of Computer Science</p> */}
+
                 </div>
 
                 {/* <div className="mt-12 flex flex-col justify-center">

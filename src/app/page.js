@@ -1,16 +1,20 @@
+import {redirect} from "next/navigation";
 
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-15">
 
-        {/*<div className="">
-            <div
-                className="relative rounded h-14 bg-gradient-to-r from-cyan-500 to-blue-500 dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert font-bold text-2xl font-bold"
-            >
-                News Aggregator
-            </div>
-        </div>*/}
+
+    redirect('/login')
+
+
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+
+        <div
+            className="rounded p-5 bg-gradient-to-r from-cyan-500 to-blue-500 dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert font-bold text-5xl"
+        >
+            News Aggregator
+        </div>
 
         <div className="mb-32 grid text-center">
             <div className="">
