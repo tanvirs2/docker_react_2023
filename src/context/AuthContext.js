@@ -9,7 +9,7 @@ export const AuthContext = createContext({});
 
 // Create the auth provider component
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(null);
     //const [isLoading, setIsLoading] = useState(true);
 
     const csrf = () => axiosWithBase.get("sanctum/csrf-cookie");
@@ -17,27 +17,24 @@ export const AuthProvider = ({ children }) => {
 
 
     // Simulate user authentication
-    useEffect(() => {
-        // Check if user is logged in
-        //const isLoggedIn = localStorage.getItem('isLoggedIn');
+    useEffect( () => {
 
-        /*if (isLoggedIn) {
-            // User is logged in, set the user state
-            setUser({ name: 'John Doe' });
-        }*/
+        (async ()=>{
+            if (!user) {
+                await getLoggedUser();
+            }
+        })()
 
-        // Set loading state to false
-        //setIsLoading(false);
     }, []);
 
 
     const getLoggedUser = async () => {
-
-        const {data} = await axiosWithBase.get("/api/user");
-        //console.log(data)
-
-        setUser(data);
-
+        try {
+            const {data} = await axiosWithBase.get("/api/user");
+            setUser(data);
+        } catch (e){
+            console.log('user not logged in')
+        }
     };
 
     // Login function
@@ -46,31 +43,23 @@ export const AuthProvider = ({ children }) => {
         await csrf();
 
         try {
+
             await axiosWithBase.post("/login", data);
             await getLoggedUser();
-
-            //console.log(user)
-
             router.push("/news-and-articles")
+
         }catch(e){
             console.log('errr',e)
         }
 
-        // Perform login logic here
-
-        // Set the user state
-        //setUser({ name: 'John Doe' });
-
-        // Set isLoggedIn flag in localStorage
-        //localStorage.setItem('isLoggedIn', true);
     };
 
     // Logout function
     const logout = () => {
         // Perform logout logic here
-        router.push("/")
         axiosWithBase.post('/logout').then(()=>{
-            setUser({});
+            router.push("/")
+            setUser(null);
         })
 
         // Set the user state to null

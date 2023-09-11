@@ -1,31 +1,52 @@
-import {redirect} from "next/navigation";
+"use client";
+
+import {useEffect, useState} from "react"
+import {redirect, useRouter } from "next/navigation";
+import useAuthContext from "../context/AuthContext";
 
 
-export default function Home() {
+export default function Login() {
 
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
-    redirect('/login')
+    const {login, user} = useAuthContext()
 
+    const router = useRouter();
 
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    const handleLogin = async (event) => {
+        event.preventDefault()
+        login({email, password})
+    }
 
-        <div
-            className="rounded p-5 bg-gradient-to-r from-cyan-500 to-blue-500 dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert font-bold text-5xl"
-        >
-            News Aggregator
-        </div>
+    useEffect(()=>{
+        if (user) {
+            router.push("/news-and-articles")
+        } else {
+            router.push("/")
+        }
+    })
 
-        <div className="mb-32 grid text-center">
-            <div className="">
-                <form className="px-4 rounded mx-auto max-w-3xl w-full my-32 inputs space-y-6">
-                    <div>
-                        <h1 className="text-4xl font-bold">User Login</h1>
-                        <p className="text-gray-600">
-                            Login to see your preferred article, news and settings.
-                        </p>
-                    </div>
-                    {/*<div className="flex space-x-4">
+    return (
+        <main className="flex min-h-screen flex-col items-center justify-between p-24">
+
+            <div
+                className="rounded p-5 bg-gradient-to-r from-cyan-500 to-blue-500 dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert font-bold text-5xl"
+            >
+                News Aggregator
+            </div>
+
+            <div className="mb-32 grid text-center">
+                <div className="">
+                    <form className="px-4 rounded mx-auto max-w-3xl w-full my-32 inputs space-y-6" onSubmit={handleLogin}>
+                        <div>
+                            <h1 className="text-4xl font-bold">User Login</h1>
+                            <p className="text-gray-600">
+                                Login to see your preferred article, news and settings.
+                            </p>
+                        </div>
+
+                        {/*<div className="flex space-x-4">
                         <div className="w-1/2">
                             <label htmlFor="firstname">User Email</label>
                             <input
@@ -45,33 +66,35 @@ export default function Home() {
                             />
                         </div>
                     </div>*/}
-                    <div>
-                        <label htmlFor="address">Email</label>
-                        <input
-                            className="border border-gray-400 px-4 py-2 rounded w-full focus:outline-none focus:border-teal-400"
-                            type="text"
-                            name="address"
-                            id="address"
-                        />
-                        {/*<p className="text-sm text-gray-600">
+                        <div>
+                            <label>Email</label>
+                            <input
+                                className="border border-gray-400 px-4 py-2 rounded w-full focus:outline-none focus:border-teal-400"
+                                type="text"
+                                onChange={(e)=>{
+                                    setEmail(e.target.value)
+                                }}
+                            />
+                            {/*<p className="text-sm text-gray-600">
                             We will use this as your billing address
                         </p>*/}
-                    </div>
+                        </div>
 
-                    <div>
-                        <label htmlFor="address">Password</label>
-                        <input
-                            className="border border-gray-400 px-4 py-2 rounded w-full focus:outline-none focus:border-teal-400"
-                            type="password"
-                            name="address"
-                            id="address"
-                        />
-                    </div>
+                        <div>
+                            <label>Password</label>
+                            <input
+                                className="border border-gray-400 px-4 py-2 rounded w-full focus:outline-none focus:border-teal-400"
+                                type="password"
+                                onChange={(e)=>{
+                                    setPassword(e.target.value)
+                                }}
+                            />
+                        </div>
 
-                    <div>
-                        <button className="btn-primary">Login</button>
-                    </div>
-                    {/*<div>
+                        <div>
+                            <button className="btn-primary">Login</button>
+                        </div>
+                        {/*<div>
                         <label htmlFor="budget">Budget</label>
                         <div className="flex w-1/4">
                             <div className="rounded-l flex text-white items-center px-4 bg-gray-400">
@@ -96,13 +119,13 @@ export default function Home() {
                             />
                         </div>
                     </div>*/}
-                </form>
+                    </form>
+                </div>
+
+
             </div>
 
 
-        </div>
-
-
-    </main>
-  )
+        </main>
+    );
 }
