@@ -1,6 +1,23 @@
+"use client";
+
+import { useState } from "react"
+import {axiosWithBase, serverBaseUrl} from "../../../utils";
+import {redirect, useRouter } from "next/navigation";
+import useAuthContext from "../../context/AuthContext";
 
 
-export default function Home() {
+export default function Login() {
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    const {login} = useAuthContext()
+
+    const handleLogin = async (event) => {
+        event.preventDefault()
+        login({email, password})
+    }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
 
@@ -12,13 +29,14 @@ export default function Home() {
 
         <div className="mb-32 grid text-center">
             <div className="">
-                <form className="px-4 rounded mx-auto max-w-3xl w-full my-32 inputs space-y-6">
+                <form className="px-4 rounded mx-auto max-w-3xl w-full my-32 inputs space-y-6" onSubmit={handleLogin}>
                     <div>
                         <h1 className="text-4xl font-bold">User Login</h1>
                         <p className="text-gray-600">
                             Login to see your preferred article, news and settings.
                         </p>
                     </div>
+
                     {/*<div className="flex space-x-4">
                         <div className="w-1/2">
                             <label htmlFor="firstname">User Email</label>
@@ -40,12 +58,13 @@ export default function Home() {
                         </div>
                     </div>*/}
                     <div>
-                        <label htmlFor="address">Email</label>
+                        <label>Email</label>
                         <input
                             className="border border-gray-400 px-4 py-2 rounded w-full focus:outline-none focus:border-teal-400"
                             type="text"
-                            name="address"
-                            id="address"
+                            onChange={(e)=>{
+                                setEmail(e.target.value)
+                            }}
                         />
                         {/*<p className="text-sm text-gray-600">
                             We will use this as your billing address
@@ -53,12 +72,13 @@ export default function Home() {
                     </div>
 
                     <div>
-                        <label htmlFor="address">Password</label>
+                        <label>Password</label>
                         <input
                             className="border border-gray-400 px-4 py-2 rounded w-full focus:outline-none focus:border-teal-400"
                             type="password"
-                            name="address"
-                            id="address"
+                            onChange={(e)=>{
+                                setPassword(e.target.value)
+                            }}
                         />
                     </div>
 

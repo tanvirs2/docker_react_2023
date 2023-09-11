@@ -1,6 +1,27 @@
+"use client"
+
 import Link from "next/link";
+import useAuthContext from "../../context/AuthContext";
+import {useEffect} from "react";
+import {useRouter} from "next/navigation";
+import {collect} from "collect.js";
+
 
 const Header = () => {
+
+  const {logout, user} = useAuthContext();
+  const router = useRouter();
+  const userCollect = collect(user)
+  const hasUserCheck = userCollect.isNotEmpty()
+
+  //console.log('user:',hasUserCheck);
+
+  useEffect(()=>{
+
+    hasUserCheck ? router.push("/news-and-articles") : router.push('/')
+
+  }, [])
+
   return (
       <header className="bg-white">
         <div className="container mx-auto px-4 py-8 flex items-center">
@@ -83,11 +104,9 @@ const Header = () => {
               </li>*/}
             </ul>
           </nav>
-          <Link href="/">
-            <div className="ml-4 hidden sm:flex flex-col font-bold">
-              <span>Logout</span>
-            </div>
-          </Link>
+          <div className="ml-4 hidden sm:flex flex-col font-bold cursor-pointer" onClick={logout}>
+            <span>Logout</span>
+          </div>
 
         </div>
         <hr />
@@ -99,7 +118,6 @@ export default function RootLayout({ children }) {
   return (
     <>
       <Header/>
-
       {children}
     </>
   )
