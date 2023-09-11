@@ -41,7 +41,17 @@ export default function Login() {
 
                 <div className="">
                     <Link href="\user-signup" >
-                        <button className="btn-primary mt-8">Reader Signup</button>
+
+                        <button
+                            className=" mt-8 inline-flex items-center px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none"
+                                 viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                      d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                            </svg>
+
+                            Reader Signup
+                        </button>
                     </Link>
 
                     <form className="px-4 rounded mx-auto max-w-3xl w-full my-32 inputs space-y-6" onSubmit={handleLogin}>
@@ -131,7 +141,7 @@ export default function Login() {
 
             </div>
 
-            <div>&nbsp;ss</div>
+            <div>&nbsp;</div>
 
         </main>
     );

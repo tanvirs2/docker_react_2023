@@ -2,15 +2,53 @@
 
 import Link from "next/link";
 import {useState} from "react";
+import {axiosWithBase} from "../../../utils";
+import {useRouter} from "next/navigation";
+import useAuthContext from "../../context/AuthContext";
 
 
 export default function UserRegistration() {
+
+    const router = useRouter();
 
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [address, setAddress] = useState("")
     const [password, setPassword] = useState("")
     const [retypePassword, setRetypePassword] = useState("")
+
+    const {register} = useAuthContext()
+
+    const handleRegister = async (event) => {
+
+        event.preventDefault();
+        register({name, email, address, password, password_confirmation: retypePassword})
+
+        /*console.log('errr', name,
+            email,
+            address,
+            password,
+            retypePassword,)*/
+
+
+        /*try {
+
+            await axiosWithBase.post("/register", {name, email, address, password, password_confirmation: retypePassword});
+            //await getLoggedUser();
+
+            setName('')
+            setEmail('')
+            setAddress('')
+            setPassword('')
+            setRetypePassword('')
+
+            router.push("/news-and-articles")
+
+        } catch (e) {
+            console.log('errr', e)
+        }*/
+
+    };
 
     return (
         <main className="flex min-h-screen items-center justify-between p-20">
@@ -23,7 +61,7 @@ export default function UserRegistration() {
 
             <div className=" text-center border-l px-20">
                 <div className="">
-                    <form className="px-4 rounded mx-auto max-w-3xl w-full my-32 inputs space-y-6">
+                    <form className="px-4 rounded mx-auto max-w-3xl w-full my-32 inputs space-y-6" onSubmit={handleRegister}>
                         <div>
                             <h1 className="text-4xl font-bold">Reader Registration</h1>
                             <p className="text-gray-600">

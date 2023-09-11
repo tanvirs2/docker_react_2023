@@ -110,10 +110,17 @@ export default function NewsAndArticles() {
                             {/*<img className="w-full" src="/mountain.jpg" alt="Mountain"/>*/}
                                 <div className="px-6 py-4">
                                     <div className="font-bold text-xl mb-2">Mountain</div>
-                                    <p className="text-gray-700 text-base">
+                                    <div className="flex text-xs text-red-400">By: Humayon</div>
+                                    <p className="text-gray-700 text-base mb-2">
                                         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea!
                                         Maiores et perferendis eaque, exercitationem praesentium nihil.
                                     </p>
+                                    <hr/>
+                                    <div className="flex justify-between mt-4 text-xs">
+                                        <div className="flex flex-row text-blue-600">BBC</div>
+                                        <div className="flex flex-row-reverse text-blue-600">Category: Sports</div>
+                                    </div>
+
                                 </div>
                             </div>
                         </Link>

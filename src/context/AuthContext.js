@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }) => {
             const {data} = await axiosWithBase.get("/api/user");
             setUser(data);
         } catch (e){
+            setIsLoading(false);
             console.log('user not logged in')
         }
     };
@@ -54,10 +55,34 @@ export const AuthProvider = ({ children }) => {
             router.push("/news-and-articles")
 
         }catch(e){
+            setIsLoading(false);
             console.log('errr',e)
         }
 
     };
+
+    const register = async ({...data}) => {
+        setIsLoading(true);
+
+        try {
+
+            await axiosWithBase.post("/register", data);
+            await getLoggedUser();
+            setIsLoading(false);
+
+            router.push("/news-and-articles")
+
+        }catch(e){
+            setIsLoading(false);
+            console.log('errr',e)
+        }
+
+    };
+
+
+    const postRequestToBackend = () => {
+
+    }
 
     // Logout function
     const logout = () => {
@@ -75,6 +100,7 @@ export const AuthProvider = ({ children }) => {
     // Provide the auth context value
     const authContextValue = {
         user,
+        register,
         getLoggedUser,
         login,
         logout,
