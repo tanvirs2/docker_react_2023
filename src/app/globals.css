@@ -37,3 +37,4 @@ body {
 .custom-ts-switch:checked ~ span:last-child {
   --tw-translate-x: 1.75rem; /* translate-x-7 */
 }
+

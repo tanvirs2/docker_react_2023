@@ -3,6 +3,7 @@
 import {useEffect, useState} from "react"
 import {redirect, useRouter } from "next/navigation";
 import useAuthContext from "../context/AuthContext";
+import Link from "next/link";
 
 
 export default function Login() {
@@ -37,7 +38,12 @@ export default function Login() {
             </div>
 
             <div className="mb-32 grid text-center">
+
                 <div className="">
+                    <Link href="\user-signup" >
+                        <button className="btn-primary mt-8">Reader Signup</button>
+                    </Link>
+
                     <form className="px-4 rounded mx-auto max-w-3xl w-full my-32 inputs space-y-6" onSubmit={handleLogin}>
                         <div>
                             <h1 className="text-4xl font-bold">User Login</h1>
@@ -125,6 +131,7 @@ export default function Login() {
 
             </div>
 
+            <div>&nbsp;ss</div>
 
         </main>
     );
