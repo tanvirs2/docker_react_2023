@@ -1,4 +1,8 @@
+"use client"
 
+import {useState} from "react";
+import {axiosWithBase} from "../../../../utils";
+import useAuthContext from "../../../context/AuthContext";
 
 const FavoritePreference = ({name, datas})=>{
 
@@ -38,6 +42,21 @@ const FavoritePreference = ({name, datas})=>{
 }
 
 export default function UserProfile() {
+
+    const [notPreferredNewsfeed, setNotPreferredNewsfeed] = useState('on');
+
+    const {user} = useAuthContext();
+
+    const handleSwitch = () => {
+
+        axiosWithBase.post('/personalize-profile', {user_id: user.id, status: notPreferredNewsfeed}).then(({data})=>{
+            console.log(data)
+            //setNewsAndArticles(data);
+        })
+
+        console.log(notPreferredNewsfeed);
+        setNotPreferredNewsfeed(notPreferredNewsfeed === 'on' ? 'off': 'on')
+    }
     return (
         <div className="p-16">
             <div className="p-8 bg-white shadow mt-24">
@@ -80,8 +99,7 @@ export default function UserProfile() {
 
                 <div className="mt-20 text-center pb-12">
                     <h1 className="text-4xl font-medium text-gray-700">
-                        Jessica Jones, &nbsp;
-                        <span className="font-light text-gray-500">27</span>
+                        Jessica Jones
                     </h1>
                     <p className="font-light text-gray-600 mt-3">Bucharest, Romania</p>
 
@@ -92,15 +110,16 @@ export default function UserProfile() {
                             <label className="flex items-center relative w-max mx-auto cursor-pointer select-none">
                                 <span className="text-lg font-bold mr-3">Personalized news feed</span>
                                 <input
+                                    onChange={handleSwitch}
                                     type="checkbox"
                                     className="custom-ts-switch appearance-none transition-colors cursor-pointer w-14 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 bg-red-500"
                                 />
                                 <span className="absolute font-medium text-xs uppercase right-1 text-white">
                                 OFF
-                            </span>
+                                </span>
                                 <span className="absolute font-medium text-xs uppercase right-8 text-white">
                                 ON
-                            </span>
+                                </span>
                                 <span className="w-7 h-7 right-7 absolute rounded-full transform transition-transform bg-gray-200"/>
                             </label>
                         </div>
