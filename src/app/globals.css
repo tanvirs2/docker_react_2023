@@ -34,7 +34,7 @@ body {
   background-color: #22c55e; /* bg-green-500 */
 }
 
-.custom-ts-switch:checked ~ span:last-child {
+.btn-switch-on {
   --tw-translate-x: 1.75rem; /* translate-x-7 */
 }
 

@@ -1,13 +1,22 @@
 "use client"
-
-import {useState} from "react";
+import '../../globals.css'
+import {useEffect, useState} from "react";
 import {axiosWithBase} from "../../../../utils";
 import useAuthContext from "../../../context/AuthContext";
+import Select from 'react-select'
 
-const FavoritePreference = ({name, datas})=>{
+const FavoritePreference = ({name, hasData, datas, dataHandler})=>{
+
+    const [selectVal, setSelectVal] = useState('')
+
+    const handleChange = (event) => {
+        //console.log(event);
+        setSelectVal(event.value);
+        dataHandler(event.value)
+    };
 
     return (
-        <div className="mr-2 rounded overflow-hidden shadow-lg content-center">
+        <div className="mr-2 rounded shadow-lg content-center">
             {/*<img className="w-full" src="/mountain.jpg" alt="Mountain" />*/}
             <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2">Your Favorite {name}</div>
@@ -15,12 +24,13 @@ const FavoritePreference = ({name, datas})=>{
             </div>
             <div className="px-6 pt-4 pb-2">
 
+
                 {
-                    datas.map((data, index)=>{
+                    datas?.map((data, index)=>{
                         return (
                             <span key={index}
                                 className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                                photography
+                                {data}
                             </span>
                         )
                     })
@@ -29,13 +39,10 @@ const FavoritePreference = ({name, datas})=>{
             </div>
 
             <div className="px-6 py-4">
-                <p className="text-gray-700 text-base">
+                <p className="text-gray-700 text-base z-10">
                     Select a new {name} if you want
                 </p>
-                <select name="" id="">
-                    <option value="">a</option>
-                    <option value="">b</option>
-                </select>
+                <Select options={hasData} onChange={handleChange} />
             </div>
         </div>
     )
@@ -44,18 +51,74 @@ const FavoritePreference = ({name, datas})=>{
 export default function UserProfile() {
 
     const [notPreferredNewsfeed, setNotPreferredNewsfeed] = useState('on');
+    const [newsSource, setNewsSource] = useState([]);
+    const [selectedSource, setSelectedSource] = useState('');
+    const [userPreference, setUserPreference] = useState([{
+        "id": 0,
+        "user_id": 0,
+        "sources": "",
+        "authors": null,
+        "categories": null,
+        "status": "off",
+        "created_at": "2023-09-12T07:11:13.000000Z",
+        "updated_at": "2023-09-12T07:11:22.000000Z"
+    }]);
 
     const {user} = useAuthContext();
 
+    useEffect(()=>{
+
+        axiosWithBase.get('/api/user-preference')
+            .then(res=>res.data)
+            .then((datas)=>{
+            console.log('-----',datas)
+                setUserPreference(datas);
+            /*let mapDatas = datas.map(data=>{
+                return { value: data, label: data }
+            })
+            setNewsSource(mapDatas)*/
+        })
+
+        axiosWithBase.get('/news-source')
+            .then(res=>res.data)
+            .then((datas)=>{
+            //console.log(datas)
+            let mapDatas = datas.map(data=>{
+                return { value: data, label: data }
+            })
+            setNewsSource(mapDatas)
+        })
+    }, [])
+
     const handleSwitch = () => {
 
-        axiosWithBase.post('/personalize-profile', {user_id: user.id, status: notPreferredNewsfeed}).then(({data})=>{
+        axiosWithBase.post('/personalize-profile', {user_id: user.id, status: notPreferredNewsfeed, selectedSource}).then(({data})=>{
             console.log(data)
             //setNewsAndArticles(data);
+            setUserPreference(data)
         })
 
         console.log(notPreferredNewsfeed);
         setNotPreferredNewsfeed(notPreferredNewsfeed === 'on' ? 'off': 'on')
+    }
+
+
+
+    const handleSelectSource = (value) => {
+        setSelectedSource(value)
+    }
+
+
+    const handleSave = () => {
+
+        axiosWithBase.post('/personalize-profile', {user_id: user.id, status: notPreferredNewsfeed, selectedSource}).then(({data})=>{
+            console.log(data)
+            setUserPreference(data)
+            //setNewsAndArticles(data);
+        })
+
+        /*console.log(notPreferredNewsfeed);
+        setNotPreferredNewsfeed(notPreferredNewsfeed === 'on' ? 'off': 'on')*/
     }
     return (
         <div className="p-16">
@@ -63,7 +126,7 @@ export default function UserProfile() {
                 <div className="grid grid-cols-1 md:grid-cols-3">
                     <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
                         <div>
-                            <p className="font-bold text-gray-700 text-xl">22</p>
+                            <p className="font-bold text-gray-700 text-xl">{userPreference[1]?.length}</p>
                             <p className="text-gray-400">Source</p>
                         </div>
                         <div>
@@ -99,9 +162,9 @@ export default function UserProfile() {
 
                 <div className="mt-20 text-center pb-12">
                     <h1 className="text-4xl font-medium text-gray-700">
-                        Jessica Jones
+                        { user?.name }
                     </h1>
-                    <p className="font-light text-gray-600 mt-3">Bucharest, Romania</p>
+                    <p className="font-light text-gray-600 mt-3">{ user?.address }</p>
 
 
                     <div className="mt-8 text-gray-500">
@@ -112,30 +175,28 @@ export default function UserProfile() {
                                 <input
                                     onChange={handleSwitch}
                                     type="checkbox"
-                                    className="custom-ts-switch appearance-none transition-colors cursor-pointer w-14 h-7 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-blue-500 bg-red-500"
+                                    className=""
+                                    value={userPreference[0].status}
+                                    checked={userPreference[0].status === 'on'}
                                 />
-                                <span className="absolute font-medium text-xs uppercase right-1 text-white">
-                                OFF
-                                </span>
-                                <span className="absolute font-medium text-xs uppercase right-8 text-white">
-                                ON
-                                </span>
-                                <span className="w-7 h-7 right-7 absolute rounded-full transform transition-transform bg-gray-200"/>
+
                             </label>
+                            <h3 className="font-bold text-red-400">Newsfeed: {userPreference[0].status}</h3>
                         </div>
 
                     </div>
 
                     <div className="p-10 flex justify-center">
 
-                        <FavoritePreference name="Source" datas={['photography', 'travel', 'winter']}/>
+                        <FavoritePreference name="Source" hasData={newsSource} dataHandler={handleSelectSource} datas={userPreference[1]}/>
 
-                        <FavoritePreference name="Authors" datas={['photography', 'travel', 'winter']}/>
+                        <FavoritePreference name="Authors" hasData={[]} datas={['photography', 'travel', 'winter']}/>
 
-                        <FavoritePreference name="Category" datas={['photography', 'travel', 'winter']}/>
+                        <FavoritePreference name="Category" hasData={[]} datas={['photography', 'travel', 'winter']}/>
 
                     </div>
 
+                    <button className="btn-primary w-1/2" onClick={handleSave}>Save</button>
 
                 </div>
 

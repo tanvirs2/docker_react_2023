@@ -34,6 +34,8 @@ export const AuthProvider = ({ children }) => {
         try {
             const {data} = await axiosWithBase.get("/api/user");
             setUser(data);
+            console.log('user: ',data)
+
         } catch (e){
             setIsLoading(false);
             console.log('user not logged in')
