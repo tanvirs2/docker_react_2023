@@ -1,6 +1,22 @@
+"use client"
 
+import {useParams} from "next/navigation";
+import {useEffect, useState} from "react";
+import {axiosWithBase} from "../../../../../utils";
 
 export default function ViewNews(){
+
+    const { id } = useParams()
+    const [newsAndArticle, setNewsAndArticle] = useState({});
+
+
+    useEffect(()=>{
+        axiosWithBase.get(`scrapping/${id}`).then(({data})=>{
+            //console.log(data)
+            setNewsAndArticle(data);
+        })
+    }, []);
+
     return (
         <div>
             {/*<div className="pb-20 h-0.5 bg-gray-300 px-2">
@@ -28,13 +44,20 @@ export default function ViewNews(){
 
             <div className="p-10 mt-5">
                 <div className="rounded overflow-hidden shadow-lg">
-                    {/*<img className="w-full" src="/mountain.jpg" alt="Mountain"/>*/}
+                    <img className="w-full" src={newsAndArticle.img} alt="Mountain"/>
                     <div className="px-6 py-4">
-                        <div className="font-bold text-7xl mb-2">Mountain</div>
+                        <div className="flex text-xl text-red-400">By: {newsAndArticle.author}</div>
+                        <div className="flex text-xl text-green-500">Publish: {newsAndArticle.publish_date}</div>
+                        <div className="font-bold text-5xl mb-2">{newsAndArticle.title} </div>
                         <p className="text-gray-700 text-3xl mt-8 first-letter:text-6xl first-letter:text-blue-600 first-letter:pr-1">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea!
-                            Maiores et perferendis eaque, exercitationem praesentium nihil.
+                            {newsAndArticle.description}
                         </p>
+
+                        <hr/>
+                        <div className="flex justify-between mt-4 text-xs">
+                            <div className="flex text-xl flex-row text-blue-600">Source: {newsAndArticle.source}</div>
+                            <div className="flex text-xl flex-row-reverse text-blue-600">Category: {newsAndArticle.category}</div>
+                        </div>
                     </div>
                 </div>
             </div>

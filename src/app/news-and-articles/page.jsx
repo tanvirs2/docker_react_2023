@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import {newsAndArticles} from "../../service";
+//import {newsAndArticles} from "../../service";
+import {useEffect, useState} from "react";
+import {axiosWithBase} from "../../../utils";
 
 
-const FilterInput = ({name, type, placeholder})=>{
+/*const FilterInput = ({name, type, placeholder})=>{
     return (
         <div className="w-full p-3">
             <div className="relative">
@@ -22,10 +24,20 @@ const FilterInput = ({name, type, placeholder})=>{
             </div>
         </div>
     )
-}
+}*/
 
 
 export default function NewsAndArticles() {
+
+    const [newsAndArticles, setNewsAndArticles] = useState([]);
+
+    useEffect(()=>{
+        axiosWithBase.get('scrapping').then(({data})=>{
+            //console.log(data)
+            setNewsAndArticles(data);
+        })
+    }, []);
+
     return (
         <main className="">
             <div className="bg-gray-100 rounded-md flex items-center pl-6">
@@ -100,25 +112,25 @@ export default function NewsAndArticles() {
             </div>*/}
 
 
+            <div
+                className="p-10 px-40 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
 
-            <div className="p-10 px-40 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-
-                {newsAndArticles.map((elm, index)=>{
+                {newsAndArticles.map(({id, title, author, img, short_description, category, source, publish_date}, index) => {
                     return (
-                        <Link href="/news-and-articles/view-news" key={index}>
+                        <Link href={`/news-and-articles/view-news/${id}`} key={index}>
                             <div className="rounded overflow-hidden shadow-lg">
-                            {/*<img className="w-full" src="/mountain.jpg" alt="Mountain"/>*/}
+                                <img className="w-full" src={img ?? 'https://placehold.co/600x400?text=No%20Image'} alt="Mountain"/>
                                 <div className="px-6 py-4">
-                                    <div className="font-bold text-xl mb-2">Mountain</div>
-                                    <div className="flex text-xs text-red-400">By: Humayon</div>
+                                    <div className="font-bold text-xl mb-2">{title}</div>
+                                    <div className="flex text-xs text-red-400">By: {author}</div>
+                                    <div className="flex text-xs text-green-500">Publish: {publish_date}</div>
                                     <p className="text-gray-700 text-base mb-2">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea!
-                                        Maiores et perferendis eaque, exercitationem praesentium nihil.
+                                        {short_description}
                                     </p>
                                     <hr/>
                                     <div className="flex justify-between mt-4 text-xs">
-                                        <div className="flex flex-row text-blue-600">BBC</div>
-                                        <div className="flex flex-row-reverse text-blue-600">Category: Sports</div>
+                                        <div className="flex flex-row text-blue-600">Source: {source}</div>
+                                        <div className="flex flex-row-reverse text-blue-600">Category: {category}</div>
                                     </div>
 
                                 </div>

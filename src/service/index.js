@@ -1,15 +1,16 @@
 const newsAndArticles = [
     {
-        title: "Full-stack Developer",
-        company_name: "GenomeArc Inc",
-        icon: 'starbucks',
-        iconBg: "#383E56",
-        date: "JANUARY 2022 - PRESENT (Part Time)",
-        points: [
-            "In this organization, we utilize a specialized software designed exclusively for medical scientists.",
-            "I have modified the interface to make it interactive and easy to use for scientists, as they have different requirements compared to other users. Moreover, I have improved the performance optimization.",
-            "Additionally, I am involved in the development and guidance of their website, which is user-friendly and dynamic for both general users and administrators.",
-        ],
+        "id": 1,
+        "img": "https://media.wired.com/photos/64fbb262ad5feafc253f613c/191:100/w_1280,c_limit/Google-Search-Engine-Antitrust-Lawsuit-Business-1638063681.jpg",
+        "title": "Is Google’s Search Engine Smart or Sneaky? A Trial Court Judge Will Decide",
+        "short_description": "Google’s search dominance is going on trial in the biggest US antitrust case since a crackdown on Big Tech that started in 2019.",
+        "description": "A family members hurried Google search for a last-second visa to visit New Zealand recently caused a headacheand provided a timely reminder of why Google faces a landmark US antitrust trial next week… [+3093 chars]",
+        "category": "not found",
+        "author": "Paresh Dave",
+        "source": "Wired",
+        "publish_date": "2023-09-10T11:00:00Z",
+        "created_at": "2023-09-11T19:34:11.000000Z",
+        "updated_at": "2023-09-11T19:34:11.000000Z"
     },
     {},
     {},
