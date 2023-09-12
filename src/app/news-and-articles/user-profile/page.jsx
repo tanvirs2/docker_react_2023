@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {axiosWithBase} from "../../../../utils";
 import useAuthContext from "../../../context/AuthContext";
 import Select from 'react-select'
+import Link from "next/link";
 
 const FavoritePreference = ({name, hasData, datas, dataHandler})=>{
 
@@ -52,7 +53,9 @@ export default function UserProfile() {
 
     const [notPreferredNewsfeed, setNotPreferredNewsfeed] = useState('on');
     const [newsSource, setNewsSource] = useState([]);
+    const [newsAuthor, setNewsAuthor] = useState([]);
     const [selectedSource, setSelectedSource] = useState('');
+    const [selectedAuthor, setSelectedAuthor] = useState('');
     const [userPreference, setUserPreference] = useState([{
         "id": 0,
         "user_id": 0,
@@ -60,26 +63,20 @@ export default function UserProfile() {
         "authors": null,
         "categories": null,
         "status": "off",
-        "created_at": "2023-09-12T07:11:13.000000Z",
-        "updated_at": "2023-09-12T07:11:22.000000Z"
     }]);
 
-    const {user} = useAuthContext();
+    const {user, logout} = useAuthContext();
 
     useEffect(()=>{
 
         axiosWithBase.get('/api/user-preference')
             .then(res=>res.data)
             .then((datas)=>{
-            console.log('-----',datas)
+                console.log('-----',datas)
                 setUserPreference(datas);
-            /*let mapDatas = datas.map(data=>{
-                return { value: data, label: data }
-            })
-            setNewsSource(mapDatas)*/
         })
 
-        axiosWithBase.get('/news-source')
+        axiosWithBase.get('/news-source') // news-source api getting data from DB to select from frontend
             .then(res=>res.data)
             .then((datas)=>{
             //console.log(datas)
@@ -88,15 +85,23 @@ export default function UserProfile() {
             })
             setNewsSource(mapDatas)
         })
+
+        axiosWithBase.get('/news-author') // news-source api getting data from DB to select from frontend
+            .then(res=>res.data)
+            .then((datas)=>{
+            //console.log(datas)
+            let mapDatas = datas.map(data=>{
+                return { value: data, label: data }
+            })
+
+            setNewsAuthor(mapDatas)
+        })
     }, [])
+
 
     const handleSwitch = () => {
 
-        axiosWithBase.post('/personalize-profile', {user_id: user.id, status: notPreferredNewsfeed, selectedSource}).then(({data})=>{
-            console.log(data)
-            //setNewsAndArticles(data);
-            setUserPreference(data)
-        })
+        saveData();
 
         console.log(notPreferredNewsfeed);
         setNotPreferredNewsfeed(notPreferredNewsfeed === 'on' ? 'off': 'on')
@@ -108,18 +113,29 @@ export default function UserProfile() {
         setSelectedSource(value)
     }
 
+    const handleSelectAuthor = (value) => {
+        setSelectedAuthor(value)
+    }
+
 
     const handleSave = () => {
 
-        axiosWithBase.post('/personalize-profile', {user_id: user.id, status: notPreferredNewsfeed, selectedSource}).then(({data})=>{
-            console.log(data)
-            setUserPreference(data)
-            //setNewsAndArticles(data);
-        })
+        saveData();
 
         /*console.log(notPreferredNewsfeed);
         setNotPreferredNewsfeed(notPreferredNewsfeed === 'on' ? 'off': 'on')*/
     }
+
+    const saveData = () => {
+
+        axiosWithBase.post('/personalize-profile', {user_id: user.id, status: notPreferredNewsfeed, selectedSource, selectedAuthor}).then(({data})=>{
+            console.log(data)
+            //setNewsAndArticles(data);
+            setUserPreference(data)
+        })
+    }
+
+
     return (
         <div className="p-16">
             <div className="p-8 bg-white shadow mt-24">
@@ -130,11 +146,11 @@ export default function UserProfile() {
                             <p className="text-gray-400">Source</p>
                         </div>
                         <div>
-                            <p className="font-bold text-gray-700 text-xl">10</p>
+                            <p className="font-bold text-gray-700 text-xl">{userPreference[2]?.length}</p>
                             <p className="text-gray-400">Authors</p>
                         </div>
                         <div>
-                            <p className="font-bold text-gray-700 text-xl">89</p>
+                            <p className="font-bold text-gray-700 text-xl">{userPreference[3]?.length}Not Found</p>
                             <p className="text-gray-400">Category</p>
                         </div>
                     </div>
@@ -148,11 +164,16 @@ export default function UserProfile() {
                         </div>
                     </div>
                     <div className="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
+
                         <button
-                            className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
-                            Go to Portal
+                            className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                        >
+                            <Link href="/news-and-articles">
+                                Go to Portal
+
+                            </Link>
                         </button>
-                        <button
+                        <button onClick={logout}
                             className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
                             Logout
                         </button>
@@ -190,9 +211,9 @@ export default function UserProfile() {
 
                         <FavoritePreference name="Source" hasData={newsSource} dataHandler={handleSelectSource} datas={userPreference[1]}/>
 
-                        <FavoritePreference name="Authors" hasData={[]} datas={['photography', 'travel', 'winter']}/>
+                        <FavoritePreference name="Authors" hasData={newsAuthor} dataHandler={handleSelectAuthor} datas={userPreference[2]}/>
 
-                        <FavoritePreference name="Category" hasData={[]} datas={['photography', 'travel', 'winter']}/>
+                        <FavoritePreference name="Category" hasData={[]} datas={[]}/>
 
                     </div>
 
