@@ -145,7 +145,7 @@ export default function UserProfile() {
 
 
     return (
-        <div className="p-16">
+        <div className="overflow-hidden">
             <div className="p-8 bg-white shadow mt-24">
                 <div className="grid grid-cols-1 md:grid-cols-3">
                     <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
@@ -199,7 +199,7 @@ export default function UserProfile() {
 
                     <div className="mt-8 text-gray-500">
 
-                        <div className="p-5 ">
+                        <div className="p-5 overflow-hidden">
                             <label className="flex items-center relative w-max mx-auto cursor-pointer select-none bg-indigo-100 p-2 rounded">
                                 <span className="text-lg font-bold mr-3">Personalized news feed on/off</span>
                                 <input

@@ -26,12 +26,14 @@ export default function NewsAndArticles() {
     }, [filterType]);
 
     const searchHandler = (e) => {
+        let btnClicked = e??null;
+        console.log('search_btnClicked:', btnClicked);
         setNewsLoader(true);
 
         let startDate2 = startDate ? moment(startDate).format('YYYY-MM-DD') : null;
         let endDate2 = endDate ? moment(endDate).format('YYYY-MM-DD') : null;
 
-        let url = `/scrapping?title=${searchVal}&filterType=${filterType}&from=${startDate2}&to=${endDate2}`;
+        let url = `/scrapping?btnClicked=${btnClicked}&title=${searchVal}&filterType=${filterType}&from=${startDate2}&to=${endDate2}`;
 
         axiosWithBase.get(url).then(({data})=>{
             //setStartDate(null);
@@ -108,8 +110,8 @@ export default function NewsAndArticles() {
 
             </div>
 
-            <div className="flex mx-auto bg-indigo-100 justify-center">
-                <div className="flex mx-auto text-center">
+            <div className="flex overflow-hidden bg-indigo-100 justify-center">
+                <div className="flex text-center">
 
                     <div className="flex p-3">
                         <p className="text-gray-700 font-bold"> {filterType} : </p>
@@ -135,30 +137,33 @@ export default function NewsAndArticles() {
                     endDate={endDate}
                     minDate={startDate}
                 />
-                    <svg
-                        onClick={searchHandler}
-                        className="m-auto h-5 px-4 text-gray-500 cursor-pointer"
-                        aria-hidden="true"
-                        focusable="false"
-                        data-prefix="far"
-                        data-icon="search"
-                        role="img"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 512 512"
-                    >
-                        <path
-                            fill="currentColor"
-                            d="M508.5 468.9L387.1 347.5c-2.3-2.3-5.3-3.5-8.5-3.5h-13.2c31.5-36.5 50.6-84 50.6-136C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c52 0 99.5-19.1 136-50.6v13.2c0 3.2 1.3 6.2 3.5 8.5l121.4 121.4c4.7 4.7 12.3 4.7 17 0l22.6-22.6c4.7-4.7 4.7-12.3 0-17zM208 368c-88.4 0-160-71.6-160-160S119.6 48 208 48s160 71.6 160 160-71.6 160-160 160z"
-                        />
-                    </svg>
+                    <button onClick={searchHandler} className="border bg-indigo-100">
+                        <svg
 
-                    <div className="font-bold text-2xl mt-4 text-green-500">{newsLoader ? 'loading...': null}</div>
+                            className="m-auto h-5 px-4 text-gray-500 cursor-pointer"
+                            aria-hidden="true"
+                            focusable="false"
+                            data-prefix="far"
+                            data-icon="search"
+                            role="img"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                        >
+                            <path
+                                fill="currentColor"
+                                d="M508.5 468.9L387.1 347.5c-2.3-2.3-5.3-3.5-8.5-3.5h-13.2c31.5-36.5 50.6-84 50.6-136C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c52 0 99.5-19.1 136-50.6v13.2c0 3.2 1.3 6.2 3.5 8.5l121.4 121.4c4.7 4.7 12.3 4.7 17 0l22.6-22.6c4.7-4.7 4.7-12.3 0-17zM208 368c-88.4 0-160-71.6-160-160S119.6 48 208 48s160 71.6 160 160-71.6 160-160 160z"
+                            />
+                        </svg>
+                    </button>
+
+
+                    <div className="font-bold text-2xl mt-4 text-green-500">{newsLoader ? 'loading...': `${newsAndArticles.length} Articles`}</div>
 
                 </div>
             </div>
 
             <div
-                className="p-10 px-40 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                className="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
 
                 {newsAndArticles.map(({id, title, author, img, short_description, category, source, publish_date}, index) => {
                     return (
