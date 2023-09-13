@@ -51,6 +51,8 @@ const FavoritePreference = ({name, hasData, datas, dataHandler})=>{
 
 export default function UserProfile() {
 
+    const [profileLoader, setProfileLoader] = useState(true);
+
     const [notPreferredNewsfeed, setNotPreferredNewsfeed] = useState('on');
     const [newsSource, setNewsSource] = useState([]);
     const [newsAuthor, setNewsAuthor] = useState([]);
@@ -68,13 +70,15 @@ export default function UserProfile() {
     const {user, logout} = useAuthContext();
 
     useEffect(()=>{
+        setProfileLoader(true)
 
         axiosWithBase.get('/api/user-preference')
             .then(res=>res.data)
             .then((datas)=>{
                 console.log('-----',datas)
                 setUserPreference(datas);
-        })
+                setProfileLoader(false)
+            })
 
         axiosWithBase.get('/news-source') // news-source api getting data from DB to select from frontend
             .then(res=>res.data)
@@ -84,6 +88,7 @@ export default function UserProfile() {
                 return { value: data, label: data }
             })
             setNewsSource(mapDatas)
+                setProfileLoader(false)
         })
 
         axiosWithBase.get('/news-author') // news-source api getting data from DB to select from frontend
@@ -93,7 +98,7 @@ export default function UserProfile() {
             let mapDatas = datas.map(data=>{
                 return { value: data, label: data }
             })
-
+                setProfileLoader(false)
             setNewsAuthor(mapDatas)
         })
     }, [])
@@ -128,8 +133,11 @@ export default function UserProfile() {
 
     const saveData = () => {
 
+        setProfileLoader(true)
+
         axiosWithBase.post('/personalize-profile', {user_id: user.id, status: notPreferredNewsfeed, selectedSource, selectedAuthor}).then(({data})=>{
-            console.log(data)
+            //console.log(data)
+            setProfileLoader(false)
             //setNewsAndArticles(data);
             setUserPreference(data)
         })
@@ -165,14 +173,15 @@ export default function UserProfile() {
                     </div>
                     <div className="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
 
-                        <button
-                            className="text-white py-2 px-4 uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-                        >
-                            <Link href="/news-and-articles">
-                                Go to Portal
+
+                            <Link href="/news-and-articles" className="text-white uppercase rounded bg-blue-400 hover:bg-blue-500 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
+                                <button
+                                    className="py-4 px-4"
+                                >
+                                    Go to Portal
+                                </button>
 
                             </Link>
-                        </button>
                         <button onClick={logout}
                             className="text-white py-2 px-4 uppercase rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5">
                             Logout
@@ -203,6 +212,9 @@ export default function UserProfile() {
 
                             </label>
                             <h3 className="font-bold text-red-400">Newsfeed: {userPreference[0]?.status}</h3>
+
+                            <div className="font-bold text-2xl mt-8 text-green-500">{profileLoader ? 'loading...': null}</div>
+
                         </div>
 
                     </div>

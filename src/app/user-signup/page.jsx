@@ -9,7 +9,9 @@ import useAuthContext from "../../context/AuthContext";
 
 export default function UserRegistration() {
 
-    const router = useRouter();
+
+    const [profileLoader, setProfileLoader] = useState(false);
+    const [error, setError] = useState(false);
 
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
@@ -20,34 +22,12 @@ export default function UserRegistration() {
     const {register} = useAuthContext()
 
     const handleRegister = async (event) => {
-
         event.preventDefault();
-        register({name, email, address, password, password_confirmation: retypePassword})
-
-        /*console.log('errr', name,
-            email,
-            address,
-            password,
-            retypePassword,)*/
-
-
-        /*try {
-
-            await axiosWithBase.post("/register", {name, email, address, password, password_confirmation: retypePassword});
-            //await getLoggedUser();
-
-            setName('')
-            setEmail('')
-            setAddress('')
-            setPassword('')
-            setRetypePassword('')
-
-            router.push("/news-and-articles")
-
-        } catch (e) {
-            console.log('errr', e)
-        }*/
-
+        setProfileLoader(true)
+        setError(false)
+        let attempt = await register({name, email, address, password, password_confirmation: retypePassword})
+        !attempt ? setError(true) : setError(false)
+        setProfileLoader(false)
     };
 
     return (
@@ -118,6 +98,10 @@ export default function UserRegistration() {
                         </div>
 
                         <div>
+
+                            <div className="font-bold text-2xl m-8 text-red-400">{error ? 'Error...': null}</div>
+                            <div className="font-bold text-2xl m-8 text-green-500">{profileLoader ? 'loading...': null}</div>
+
                             <button className="btn-primary">Save</button>
                         </div>
 

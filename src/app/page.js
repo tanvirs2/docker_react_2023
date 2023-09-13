@@ -8,6 +8,10 @@ import Link from "next/link";
 
 export default function Login() {
 
+    const [profileLoader, setProfileLoader] = useState(false);
+    const [error, setError] = useState(false);
+
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
@@ -17,7 +21,11 @@ export default function Login() {
 
     const handleLogin = async (event) => {
         event.preventDefault()
-        login({email, password})
+        setError(false);
+        setProfileLoader(true);
+        let attempt = await login({email, password})
+        !attempt ? setError(true) : setError(false)
+        setProfileLoader(false);
     }
 
     useEffect(()=>{
@@ -108,6 +116,8 @@ export default function Login() {
                         </div>
 
                         <div>
+                            <div className="font-bold text-2xl m-8 text-red-400">{error ? 'Error...': null}</div>
+                            <div className="font-bold text-2xl m-8 text-green-500">{profileLoader ? 'loading...': null}</div>
                             <button className="btn-primary">Login</button>
                         </div>
                         {/*<div>

@@ -72,10 +72,11 @@ export const AuthProvider = ({ children }) => {
             setIsLoading(false);
 
             router.push("/news-and-articles")
-
+            return true;
         }catch(e){
             setIsLoading(false);
-            console.log('errr',e)
+            console.log('error',e)
+            return false;
         }
 
     };
@@ -90,10 +91,10 @@ export const AuthProvider = ({ children }) => {
             setIsLoading(false);
 
             router.push("/news-and-articles")
-
+            return true;
         }catch(e){
             setIsLoading(false);
-            console.log('errr',e)
+            return false;
         }
 
     };
