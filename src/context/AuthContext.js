@@ -10,6 +10,7 @@ export const AuthContext = createContext({});
 // Create the auth provider component
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [userPreferred, setUserPreferred] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     const csrf = () => axiosWithBase.get("sanctum/csrf-cookie");
@@ -24,9 +25,25 @@ export const AuthProvider = ({ children }) => {
                 await getLoggedUser();
                 setIsLoading(false);
             }
+            if (!userPreferred) {
+                userPreference();
+            }
         })()
 
     }, []);
+
+
+    const userPreference = () => {
+        setIsLoading(true);
+
+        axiosWithBase.get('/api/user-preference')
+            .then(res=>res.data)
+            .then((datas)=>{
+                //console.log('-----',datas)
+                setIsLoading(false);
+                setUserPreferred(datas)
+            })
+    }
 
 
     const getLoggedUser = async () => {
@@ -102,6 +119,7 @@ export const AuthProvider = ({ children }) => {
     // Provide the auth context value
     const authContextValue = {
         user,
+        userPreferred,
         register,
         getLoggedUser,
         login,

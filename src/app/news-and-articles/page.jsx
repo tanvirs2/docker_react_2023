@@ -4,45 +4,47 @@ import Link from "next/link";
 //import {newsAndArticles} from "../../service";
 import {useEffect, useState} from "react";
 import {axiosWithBase} from "../../../utils";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
+import Select from "react-select";
 
-
-/*const FilterInput = ({name, type, placeholder})=>{
-    return (
-        <div className="w-full p-3">
-            <div className="relative">
-                <div className="flex w-50">
-                    <div className="rounded-l flex text-white items-center px-4 bg-gray-400 capitalize">
-                        {name}
-                    </div>
-                    <input
-                        className="border border-gray-400 px-4 py-2 rounded-r w-full focus:outline-none focus:border-teal-400 mr-2"
-                        type={type}
-                        name={name}
-                        placeholder={placeholder}
-                    />
-                </div>
-            </div>
-        </div>
-    )
-}*/
 
 
 export default function NewsAndArticles() {
 
     const [newsAndArticles, setNewsAndArticles] = useState([]);
+    const [filterType, setFilterType] = useState('source');
+    const [searchVal, setSearchVal] = useState(null);
+
+    let [startDate, setStartDate] = useState(null);
+    let [endDate, setEndDate] = useState(null);
 
     useEffect(()=>{
-        axiosWithBase.get('scrapping').then(({data})=>{
-            //console.log(data)
+        searchHandler();
+    }, [filterType]);
+
+    const searchHandler = (e) => {
+        console.log(moment(startDate).format('YYYY-mm-DD'))
+
+        let startDate2 = startDate ? moment(startDate).format('YYYY-MM-DD') : null;
+        let endDate2 = endDate ? moment(endDate).format('YYYY-MM-DD') : null;
+
+        let url = `/scrapping?title=${searchVal}&filterType=${filterType}&from=${startDate2}&to=${endDate2}`;
+
+        axiosWithBase.get(url).then(({data})=>{
+            //setStartDate(null);
+            //setEndDate(null);
             setNewsAndArticles(data);
         })
-    }, []);
+    }
 
     return (
         <main className="">
+
             <div className="bg-gray-100 rounded-md flex items-center pl-6">
 
-                <label htmlFor="">
+                {/*<label htmlFor="">
                     <span className="bg-transparent font-bold text-lg ml-4">From: </span>
                     <input
                         className="bg-transparent uppercase font-bold text-sm focus:outline-none"
@@ -58,59 +60,97 @@ export default function NewsAndArticles() {
                         name=""
                         type="date"
                     />
-                </label>
+                </label>*/}
 
 
-                <select
-                    className="bg-transparent uppercase font-bold text-sm p-4 mr-4 border-l border-gray-300"
-                    name=""
-                    id=""
-                >
-                    <option>categories</option>
-                </select>
-                <select
+                {/*<select
                     className="bg-transparent uppercase font-bold text-sm p-4 mr-4"
                     name=""
                     id=""
                 >
-                    <option>Source</option>
-                </select>
-                <input
-                    className="border-l border-gray-300 bg-transparent font-semibold text-sm pl-4"
-                    type="text"
-                    placeholder="Article searching ..."
-                />
-                <svg
-                    className="ml-auto h-5 px-4 text-gray-500"
-                    aria-hidden="true"
-                    focusable="false"
-                    data-prefix="far"
-                    data-icon="search"
-                    role="img"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 512 512"
+                    <option>categories</option>
+                </select>*/}
+                <div
+                    className="bg-transparent uppercase font-bold text-sm p-4 mr-4"
                 >
-                    <path
-                        fill="currentColor"
-                        d="M508.5 468.9L387.1 347.5c-2.3-2.3-5.3-3.5-8.5-3.5h-13.2c31.5-36.5 50.6-84 50.6-136C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c52 0 99.5-19.1 136-50.6v13.2c0 3.2 1.3 6.2 3.5 8.5l121.4 121.4c4.7 4.7 12.3 4.7 17 0l22.6-22.6c4.7-4.7 4.7-12.3 0-17zM208 368c-88.4 0-160-71.6-160-160S119.6 48 208 48s160 71.6 160 160-71.6 160-160 160z"
-                    />
-                </svg>
-            </div>
+                    <div className="ml-2 lg:ml-4 relative inline-block ">
+                        User Preferred <br/>
+                        <label className="cursor-pointer mr-3">
+                            Source <input type="radio" name="filterType" value="source" onClick={(e)=>{
 
+                            console.log(e.target.value);
 
-            {/*<div className="p-1 bg-sky-500/75 px-2">
-                <div className="mx-auto rounded-lg overflow-hidden">
-                    <div className="md:flex mt-1.5">
+                            setFilterType(e.target.value)
 
-                        <FilterInput name="from" type="date" placeholder=""/>
-                        <FilterInput name="to" type="date" placeholder=""/>
-                        <FilterInput name="category" type="text" placeholder="Category"/>
-                        <FilterInput name="source" type="text" placeholder="Source"/>
+                        }} onChange={()=>{}} checked={filterType === 'source'}/>
+                        </label>
+
+                        <label className="cursor-pointer">
+                            Author <input type="radio" name="filterType" value="author" onClick={(e)=>{
+
+                            console.log(e.target.value);
+
+                            setFilterType(e.target.value)
+
+                        }} onChange={()=>{}} checked={filterType === 'author'}/>
+                        </label>
 
                     </div>
                 </div>
-            </div>*/}
+                <input
+                    className="border-l w-1/2 border-gray-300 bg-transparent focus:outline-none font-semibold text-xl pl-4"
+                    type="text"
+                    placeholder="Article searching ..."
+                    onChange={event => setSearchVal(event.target.value)}
+                />
 
+            </div>
+
+            <div className="flex mx-auto bg-indigo-100 justify-center">
+                <div className="flex mx-auto text-center">
+
+                    <div className="flex p-3">
+                        <p className="text-gray-700 font-bold"> {filterType} : </p>
+                        <Select options={[]} onChange={alert} />
+                    </div>
+
+                    <p className="mt-3">From:</p>
+                    <DatePicker
+                    className="border rounded p-3 mt-2"
+                    selected={startDate}
+                    onChange={(date) => setStartDate(date)}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                />
+                    <p className="mt-3">To:</p>
+                    <DatePicker
+                    className="border rounded p-3 mt-2"
+                    selected={endDate}
+                    onChange={(date) => setEndDate(date)}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    minDate={startDate}
+                />
+                    <svg
+                        onClick={searchHandler}
+                        className="m-auto h-5 px-4 text-gray-500 cursor-pointer"
+                        aria-hidden="true"
+                        focusable="false"
+                        data-prefix="far"
+                        data-icon="search"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 512 512"
+                    >
+                        <path
+                            fill="currentColor"
+                            d="M508.5 468.9L387.1 347.5c-2.3-2.3-5.3-3.5-8.5-3.5h-13.2c31.5-36.5 50.6-84 50.6-136C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c52 0 99.5-19.1 136-50.6v13.2c0 3.2 1.3 6.2 3.5 8.5l121.4 121.4c4.7 4.7 12.3 4.7 17 0l22.6-22.6c4.7-4.7 4.7-12.3 0-17zM208 368c-88.4 0-160-71.6-160-160S119.6 48 208 48s160 71.6 160 160-71.6 160-160 160z"
+                        />
+                    </svg>
+                </div>
+            </div>
 
             <div
                 className="p-10 px-40 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">

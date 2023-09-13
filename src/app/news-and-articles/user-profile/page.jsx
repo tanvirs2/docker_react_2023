@@ -191,18 +191,18 @@ export default function UserProfile() {
                     <div className="mt-8 text-gray-500">
 
                         <div className="p-5 ">
-                            <label className="flex items-center relative w-max mx-auto cursor-pointer select-none">
-                                <span className="text-lg font-bold mr-3">Personalized news feed</span>
+                            <label className="flex items-center relative w-max mx-auto cursor-pointer select-none bg-indigo-100 p-2 rounded">
+                                <span className="text-lg font-bold mr-3">Personalized news feed on/off</span>
                                 <input
                                     onChange={handleSwitch}
                                     type="checkbox"
-                                    className=""
-                                    value={userPreference[0].status}
-                                    checked={userPreference[0].status === 'on'}
+                                    className="cursor-pointer"
+                                    value={userPreference[0]?.status}
+                                    checked={userPreference[0]?.status === 'on'}
                                 />
 
                             </label>
-                            <h3 className="font-bold text-red-400">Newsfeed: {userPreference[0].status}</h3>
+                            <h3 className="font-bold text-red-400">Newsfeed: {userPreference[0]?.status}</h3>
                         </div>
 
                     </div>
