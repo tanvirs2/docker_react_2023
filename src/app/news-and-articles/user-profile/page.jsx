@@ -64,7 +64,6 @@ export default function UserProfile() {
         "sources": "",
         "authors": null,
         "categories": null,
-        "status": "off",
     }]);
 
     const {user, logout, userPreference: userPreferenceFunc} = useAuthContext();
@@ -78,6 +77,7 @@ export default function UserProfile() {
                 console.log('-----',datas)
                 setUserPreference(datas);
                 setProfileLoader(false)
+                setNotPreferredNewsfeed(datas[0].status);
             })
 
         axiosWithBase.get('/news-source') // news-source api getting data from DB to select from frontend
@@ -106,9 +106,8 @@ export default function UserProfile() {
 
     const handleSwitch = (e) => {
         console.log(e);
-        saveData();
-        console.log(notPreferredNewsfeed);
-    }
+        setNotPreferredNewsfeed(notPreferredNewsfeed === 'on' ? 'off': 'on')
+    };
 
 
 
@@ -122,11 +121,7 @@ export default function UserProfile() {
 
 
     const handleSave = () => {
-
         saveData();
-
-        /*console.log(notPreferredNewsfeed);
-        setNotPreferredNewsfeed(notPreferredNewsfeed === 'on' ? 'off': 'on')*/
     }
 
     const saveData = () => {
@@ -136,8 +131,6 @@ export default function UserProfile() {
         axiosWithBase.post('/personalize-profile', {user_id: user.id, status: notPreferredNewsfeed, selectedSource, selectedAuthor}).then(({data})=>{
             //console.log(data)
             setProfileLoader(false)
-            //setNewsAndArticles(data);
-            setNotPreferredNewsfeed(notPreferredNewsfeed === 'on' ? 'off': 'on')
             userPreferenceFunc()
             setUserPreference(data)
         })
@@ -206,8 +199,8 @@ export default function UserProfile() {
                                     onChange={handleSwitch}
                                     type="checkbox"
                                     className="cursor-pointer"
-                                    value={userPreference[0]?.status}
-                                    checked={userPreference[0]?.status === 'on'}
+                                    value={notPreferredNewsfeed}
+                                    checked={notPreferredNewsfeed === 'on'}
                                 />
 
                             </label>
