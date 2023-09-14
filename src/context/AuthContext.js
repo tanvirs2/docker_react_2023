@@ -2,33 +2,40 @@
 
 import React, {createContext, useState, useEffect, useContext} from 'react';
 import {axiosWithBase} from "../../utils";
-import {useRouter} from "next/navigation";
+import {useRouter, usePathname} from "next/navigation";
 
 // Create the auth context
 export const AuthContext = createContext({});
 
 // Create the auth provider component
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children, href }) => {
     const [user, setUser] = useState(null);
     const [userPreferred, setUserPreferred] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const csrf = () => axiosWithBase.get("sanctum/csrf-cookie");
     const router = useRouter();
+    const currentPage = usePathname();
 
 
     // Simulate user authentication
     useEffect( () => {
 
-        (async ()=>{
-            if (!user) {
-                await getLoggedUser();
-                setIsLoading(false);
-            }
-            if (!userPreferred) {
-                userPreference();
-            }
-        })()
+        //console.log('href:', currentPage  );
+        //color: router.pathname === href ? 'red' : 'black',
+
+        if(!((currentPage !== '/') ^ (currentPage !== '/user-signup'))){
+            (async ()=>{
+                if (!user) {
+                    await getLoggedUser();
+                    setIsLoading(false);
+                }
+                if (!userPreferred) {
+                    userPreference();
+                }
+            })()
+        }
+
 
     }, []);
 
@@ -42,7 +49,9 @@ export const AuthProvider = ({ children }) => {
                 //console.log('-----',datas)
                 setIsLoading(false);
                 setUserPreferred(datas)
-            })
+            }).catch(()=>{
+            setIsLoading(false);
+        })
     }
 
 
@@ -121,8 +130,8 @@ export const AuthProvider = ({ children }) => {
     const authContextValue = {
         user,
         userPreferred,
+        userPreference,
         register,
-        getLoggedUser,
         login,
         logout,
     };

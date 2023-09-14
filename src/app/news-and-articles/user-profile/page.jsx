@@ -67,7 +67,7 @@ export default function UserProfile() {
         "status": "off",
     }]);
 
-    const {user, logout} = useAuthContext();
+    const {user, logout, userPreference: userPreferenceFunc} = useAuthContext();
 
     useEffect(()=>{
         setProfileLoader(true)
@@ -104,12 +104,10 @@ export default function UserProfile() {
     }, [])
 
 
-    const handleSwitch = () => {
-
+    const handleSwitch = (e) => {
+        console.log(e);
         saveData();
-
         console.log(notPreferredNewsfeed);
-        setNotPreferredNewsfeed(notPreferredNewsfeed === 'on' ? 'off': 'on')
     }
 
 
@@ -139,6 +137,8 @@ export default function UserProfile() {
             //console.log(data)
             setProfileLoader(false)
             //setNewsAndArticles(data);
+            setNotPreferredNewsfeed(notPreferredNewsfeed === 'on' ? 'off': 'on')
+            userPreferenceFunc()
             setUserPreference(data)
         })
     }

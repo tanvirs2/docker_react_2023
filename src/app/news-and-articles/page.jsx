@@ -8,8 +8,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import Select from "react-select";
+import useAuthContext from "../../context/AuthContext";
 
-
+//userPreference
 
 export default function NewsAndArticles() {
 
@@ -21,13 +22,22 @@ export default function NewsAndArticles() {
     let [startDate, setStartDate] = useState(null);
     let [endDate, setEndDate] = useState(null);
 
+    let [userPreferredStatus, setUserPreferredStatus] = useState('on');
+    const {userPreferred} = useAuthContext();
+
     useEffect(()=>{
+        console.log('userPreference',userPreferred)
+        if (userPreferred) {
+            console.log(userPreferred[0].status)
+            setUserPreferredStatus(userPreferred[0].status)
+        }
+
         searchHandler();
-    }, [filterType]);
+    }, [filterType, userPreferred]);
 
     const searchHandler = (e) => {
         let btnClicked = e??null;
-        console.log('search_btnClicked:', btnClicked);
+        //console.log('search_btnClicked:', btnClicked);
         setNewsLoader(true);
 
         let startDate2 = startDate ? moment(startDate).format('YYYY-MM-DD') : null;
@@ -77,7 +87,7 @@ export default function NewsAndArticles() {
                 <div
                     className="bg-transparent uppercase font-bold text-sm p-4 mr-4"
                 >
-                    <div className="ml-2 lg:ml-4 relative inline-block ">
+                    {userPreferredStatus === 'on' ? <div className="ml-2 lg:ml-4 relative inline-block ">
                         User Preferred <br/>
                         <label className="cursor-pointer mr-3">
                             Source <input type="radio" name="filterType" value="source" onClick={(e)=>{
@@ -99,7 +109,8 @@ export default function NewsAndArticles() {
                         }} onChange={()=>{}} checked={filterType === 'author'}/>
                         </label>
 
-                    </div>
+                    </div>: <div className="ml-2 lg:ml-4 relative inline-block ">Search</div>}
+
                 </div>
                 <input
                     className="border-l w-1/2 border-gray-300 bg-transparent focus:outline-none font-semibold text-xl pl-4"
@@ -113,14 +124,19 @@ export default function NewsAndArticles() {
             <div className="flex overflow-hidden bg-indigo-100 justify-center">
                 <div className="flex text-center">
 
-                    <div className="flex p-3">
-                        <p className="text-gray-700 font-bold"> {filterType} : </p>
-                        <Select options={[]} onChange={alert} />
+                    <div className="flex">
+                        {userPreferredStatus === 'off' && <div className="flex p-3">
+                            <p className="text-gray-700 font-bold">
+                                {filterType} :
+                            </p>
+                            <Select options={[]} onChange={alert} />
+                        </div>}
+
                     </div>
 
                     <p className="mt-3">From:</p>
                     <DatePicker
-                    className="border rounded p-3 mt-2"
+                    className="border rounded p-3 m-2"
                     selected={startDate}
                     onChange={(date) => setStartDate(date)}
                     selectsStart
@@ -129,7 +145,7 @@ export default function NewsAndArticles() {
                 />
                     <p className="mt-3">To:</p>
                     <DatePicker
-                    className="border rounded p-3 mt-2"
+                    className="border rounded p-3 m-2"
                     selected={endDate}
                     onChange={(date) => setEndDate(date)}
                     selectsEnd
@@ -178,6 +194,7 @@ export default function NewsAndArticles() {
                                         {short_description}
                                     </p>
                                     <hr/>
+
                                     <div className="flex justify-between mt-4 text-xs">
                                         <div className="flex flex-row text-blue-600">Source: {source}</div>
                                         <div className="flex flex-row-reverse text-blue-600">Category: {category}</div>
