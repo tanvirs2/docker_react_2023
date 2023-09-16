@@ -35,6 +35,8 @@ export default function NewsAndArticles() {
         if (userPreferred) {
             console.log(userPreferred[0].status)
             setUserPreferredStatus(userPreferred[0].status)
+        } else {
+            setUserPreferredStatus("off")
         }
 
         axiosWithBase.get('/news-source') // news-source api getting data from DB to select from frontend

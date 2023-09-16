@@ -1,14 +1,18 @@
-FROM node:18-alpine
+FROM node:18
 
-WORKDIR /app
+# Install dependencies
+WORKDIR /app/react
 
-COPY .               /app
-#COPY public/               /app/public
-#COPY src/               /app/src
-#COPY package.json       /app/package.json
-#COPY package-lock.json  /app/package-lock.json
+# Copy the ReactJS application to the container
+COPY . /app/react
 
 
 RUN npm install
 
+#RUN npm run build
+
+# Expose the ReactJS port
+EXPOSE 3000
+
+# Start the ReactJS application
 CMD ["npm", "run", "dev"]

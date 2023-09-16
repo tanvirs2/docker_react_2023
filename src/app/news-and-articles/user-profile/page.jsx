@@ -77,7 +77,7 @@ export default function UserProfile() {
                 console.log('-----',datas)
                 setUserPreference(datas);
                 setProfileLoader(false)
-                setNotPreferredNewsfeed(datas[0].status);
+                setNotPreferredNewsfeed(datas[0]?.status);
             })
 
         axiosWithBase.get('/news-source') // news-source api getting data from DB to select from frontend
@@ -129,7 +129,7 @@ export default function UserProfile() {
         setProfileLoader(true)
 
         axiosWithBase.post('/personalize-profile', {user_id: user.id, status: notPreferredNewsfeed, selectedSource, selectedAuthor}).then(({data})=>{
-            //console.log(data)
+            console.log(data)
             setProfileLoader(false)
             userPreferenceFunc()
             setUserPreference(data)
