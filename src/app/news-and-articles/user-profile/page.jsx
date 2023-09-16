@@ -12,8 +12,10 @@ const FavoritePreference = ({name, hasData, datas, dataHandler})=>{
 
     const handleChange = (event) => {
         //console.log(event);
-        setSelectVal(event.value);
-        dataHandler(event.value)
+        if (event) {
+            dataHandler(event.value)
+        }
+
     };
 
     return (
@@ -43,7 +45,20 @@ const FavoritePreference = ({name, hasData, datas, dataHandler})=>{
                 <p className="text-gray-700 text-base z-10">
                     Select a new {name} if you want
                 </p>
-                <Select options={hasData} onChange={handleChange} />
+                <Select options={hasData}
+
+                        placeholder={name}
+                        onChange={(e)=>{
+                            handleChange(e)
+                        }}
+                        isClearable={true}
+                        defaultValue="dddd"
+                        setValue={(valueType, actionTypes)=> {
+                            if (actionTypes === 'clear') {
+
+                            }
+                        }}
+                />
             </div>
         </div>
     )
@@ -132,6 +147,8 @@ export default function UserProfile() {
             console.log(data)
             setProfileLoader(false)
             userPreferenceFunc()
+            setSelectedSource(null)
+            setSelectedAuthor(null)
             setUserPreference(data)
         })
     }

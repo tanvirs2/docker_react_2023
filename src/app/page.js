@@ -36,41 +36,45 @@ export default function Login() {
         }
     })
 
+    let session = localStorage.getItem('session') === 'true';
+
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
+        <>
+            {!session && <main className="flex min-h-screen flex-col items-center justify-between p-24">
 
-            <div
-                className="rounded p-5 bg-gradient-to-r from-cyan-500 to-blue-500 dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert font-bold text-5xl"
-            >
-                News Aggregator
-            </div>
+                <div
+                    className="rounded p-5 bg-gradient-to-r from-cyan-500 to-blue-500 dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert font-bold text-5xl"
+                >
+                    News Aggregator
+                </div>
 
-            <div className="mb-32 grid text-center">
+                <div className="mb-32 grid text-center">
 
-                <div className="">
-                    <Link href="\user-signup" >
+                    <div className="">
+                        <Link href="\user-signup">
 
-                        <button
-                            className=" mt-8 inline-flex items-center px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none"
-                                 viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                      d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
-                            </svg>
+                            <button
+                                className=" mt-8 inline-flex items-center px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium rounded-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none"
+                                     viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                          d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                                </svg>
 
-                            Reader Signup
-                        </button>
-                    </Link>
+                                Reader Signup
+                            </button>
+                        </Link>
 
-                    <form className="px-4 rounded mx-auto max-w-3xl w-full my-32 inputs space-y-6" onSubmit={handleLogin}>
-                        <div>
-                            <h1 className="text-4xl font-bold">User Login</h1>
-                            <p className="text-gray-600">
-                                Login to see your preferred article, news and settings.
-                            </p>
-                        </div>
+                        <form className="px-4 rounded mx-auto max-w-3xl w-full my-32 inputs space-y-6"
+                              onSubmit={handleLogin}>
+                            <div>
+                                <h1 className="text-4xl font-bold">User Login</h1>
+                                <p className="text-gray-600">
+                                    Login to see your preferred article, news and settings.
+                                </p>
+                            </div>
 
-                        {/*<div className="flex space-x-4">
+                            {/*<div className="flex space-x-4">
                         <div className="w-1/2">
                             <label htmlFor="firstname">User Email</label>
                             <input
@@ -90,37 +94,38 @@ export default function Login() {
                             />
                         </div>
                     </div>*/}
-                        <div>
-                            <label>Email</label>
-                            <input
-                                className="border border-gray-400 px-4 py-2 rounded w-full focus:outline-none focus:border-teal-400"
-                                type="text"
-                                onChange={(e)=>{
-                                    setEmail(e.target.value)
-                                }}
-                            />
-                            {/*<p className="text-sm text-gray-600">
+                            <div>
+                                <label>Email</label>
+                                <input
+                                    className="border border-gray-400 px-4 py-2 rounded w-full focus:outline-none focus:border-teal-400"
+                                    type="text"
+                                    onChange={(e) => {
+                                        setEmail(e.target.value)
+                                    }}
+                                />
+                                {/*<p className="text-sm text-gray-600">
                             We will use this as your billing address
                         </p>*/}
-                        </div>
+                            </div>
 
-                        <div>
-                            <label>Password</label>
-                            <input
-                                className="border border-gray-400 px-4 py-2 rounded w-full focus:outline-none focus:border-teal-400"
-                                type="password"
-                                onChange={(e)=>{
-                                    setPassword(e.target.value)
-                                }}
-                            />
-                        </div>
+                            <div>
+                                <label>Password</label>
+                                <input
+                                    className="border border-gray-400 px-4 py-2 rounded w-full focus:outline-none focus:border-teal-400"
+                                    type="password"
+                                    onChange={(e) => {
+                                        setPassword(e.target.value)
+                                    }}
+                                />
+                            </div>
 
-                        <div>
-                            <div className="font-bold text-2xl m-8 text-red-400">{error ? 'Error...': null}</div>
-                            <div className="font-bold text-2xl m-8 text-green-500">{profileLoader ? 'loading...': null}</div>
-                            <button className="btn-primary">Login</button>
-                        </div>
-                        {/*<div>
+                            <div>
+                                <div className="font-bold text-2xl m-8 text-red-400">{error ? 'Error...' : null}</div>
+                                <div
+                                    className="font-bold text-2xl m-8 text-green-500">{profileLoader ? 'loading...' : null}</div>
+                                <button className="btn-primary">Login</button>
+                            </div>
+                            {/*<div>
                         <label htmlFor="budget">Budget</label>
                         <div className="flex w-1/4">
                             <div className="rounded-l flex text-white items-center px-4 bg-gray-400">
@@ -145,14 +150,15 @@ export default function Login() {
                             />
                         </div>
                     </div>*/}
-                    </form>
+                        </form>
+                    </div>
+
+
                 </div>
 
+                <div>&nbsp;</div>
 
-            </div>
-
-            <div>&nbsp;</div>
-
-        </main>
+            </main>}
+        </>
     );
 }

@@ -80,6 +80,8 @@ export const AuthProvider = ({ children, href }) => {
             await getLoggedUser();
             setIsLoading(false);
 
+            localStorage.setItem('session', 'true')
+
             router.push("/news-and-articles")
             return true;
         }catch(e){
@@ -98,6 +100,8 @@ export const AuthProvider = ({ children, href }) => {
             await axiosWithBase.post("/register", data);
             await getLoggedUser();
             setIsLoading(false);
+
+            localStorage.setItem('session', 'true')
 
             router.push("/news-and-articles")
             return true;
@@ -122,6 +126,9 @@ export const AuthProvider = ({ children, href }) => {
             setIsLoading(false);
 
             router.push("/")
+
+            localStorage.removeItem('session')
+
             setUser(null);
         })
     };
