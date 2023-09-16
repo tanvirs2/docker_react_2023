@@ -46,7 +46,6 @@ const FavoritePreference = ({name, hasData, datas, dataHandler})=>{
                     Select a new {name} if you want
                 </p>
                 <Select options={hasData}
-
                         placeholder={name}
                         onChange={(e)=>{
                             handleChange(e)

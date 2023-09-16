@@ -12,6 +12,7 @@ export default function UserRegistration() {
 
     const [profileLoader, setProfileLoader] = useState(false);
     const [error, setError] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(false);
 
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
@@ -26,8 +27,18 @@ export default function UserRegistration() {
         setProfileLoader(true)
         setError(false)
         let attempt = await register({name, email, address, password, password_confirmation: retypePassword})
-        !attempt ? setError(true) : setError(false)
-        setProfileLoader(false)
+        console.log(attempt.err.response.data.message)
+
+        let errMsg = attempt.err.response.data.message;
+
+        setProfileLoader(false);
+
+        if (!attempt.status) {
+            setError(true);
+            setErrorMsg(errMsg)
+        } else {
+            setError(false)
+        }
     };
 
     return (
@@ -46,6 +57,9 @@ export default function UserRegistration() {
                             <h1 className="text-4xl font-bold">Reader Registration</h1>
                             <p className="text-gray-600">
                                 Registration to save your preferences and settings.
+                            </p>
+                            <p className="text-red-500 font-bold">
+                                {errorMsg}
                             </p>
                         </div>
 

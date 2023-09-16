@@ -83,11 +83,11 @@ export const AuthProvider = ({ children, href }) => {
             localStorage.setItem('session', 'true')
 
             router.push("/news-and-articles")
-            return true;
+            return {status: true};
         }catch(e){
             setIsLoading(false);
-            console.log('error',e)
-            return false;
+            //console.log('error',e)
+            return {status: false, err: e};
         }
 
     };
@@ -104,10 +104,10 @@ export const AuthProvider = ({ children, href }) => {
             localStorage.setItem('session', 'true')
 
             router.push("/news-and-articles")
-            return true;
+            return {status: true};
         }catch(e){
             setIsLoading(false);
-            return false;
+            return {status: false, err: e};
         }
 
     };

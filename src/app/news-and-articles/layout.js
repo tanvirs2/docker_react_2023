@@ -43,7 +43,7 @@ const Header = () => {
             <ul className="ml-4 flex items-center justify-end">
 
               <li className="ml-2 lg:ml-4 relative inline-block">
-                <Link className="" href="/news-and-articles">
+                <Link className="" href="/">
                   {/*<div className="absolute -top-1 right-0 z-10 bg-yellow-400 text-xs font-bold px-1 py-0.5 rounded-sm">
                     3
                   </div>*/}

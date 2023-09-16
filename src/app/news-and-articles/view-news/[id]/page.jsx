@@ -44,19 +44,23 @@ export default function ViewNews(){
 
             <div className="p-10 mt-5">
                 <div className="rounded overflow-hidden shadow-lg">
-                    <img className="w-full" src={newsAndArticle.img ?? 'https://placehold.co/600x400?text=No%20Image'} alt="Mountain"/>
+                    <img className="w-1/2 mx-auto" src={newsAndArticle.img ?? 'https://placehold.co/600x400?text=No%20Image'} alt="Mountain"/>
                     <div className="px-6 py-4">
                         <div className="flex text-xl text-red-400">By: {newsAndArticle.author}</div>
                         <div className="flex text-xl text-green-500">Publish: {newsAndArticle.publish_date}</div>
                         <div className="font-bold text-5xl mb-2">{newsAndArticle.title} </div>
                         <p className="text-gray-700 text-3xl mt-8 first-letter:text-6xl first-letter:text-blue-600 first-letter:pr-1">
                             {newsAndArticle.author === "TheGuardian" ? <>
-                                <iframe src={newsAndArticle.description}  width="100%" height="300" />
-                                <a href={newsAndArticle.description} className="btn-primary" target="_blank">Articale Link</a>
+
+                                <div>Articale Link: (TheGuardian has no description for free API call)</div>
+                                <br/>
+                                <a href={newsAndArticle.description} className="btn-primary my-8" target="_blank">Click here</a>
+                                <br/>
                             </> :  newsAndArticle.description}
+
                         </p>
 
-                        <hr/>
+                        <hr className="mt-20"/>
                         <div className="flex justify-between mt-4 text-xs">
                             <div className="flex text-xl flex-row text-blue-600">Source: {newsAndArticle.source}</div>
                             <div className="flex text-xl flex-row-reverse text-blue-600">Category: {newsAndArticle.category}</div>

@@ -9,6 +9,8 @@ import Link from "next/link";
 export default function Login() {
 
     const [profileLoader, setProfileLoader] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(false);
+
     const [error, setError] = useState(false);
 
 
@@ -24,8 +26,16 @@ export default function Login() {
         setError(false);
         setProfileLoader(true);
         let attempt = await login({email, password})
-        !attempt ? setError(true) : setError(false)
+        let errMsg = attempt.err.response.data.message;
+
         setProfileLoader(false);
+
+        if (!attempt.status) {
+            setError(true);
+            setErrorMsg(errMsg)
+        } else {
+            setError(false)
+        }
     }
 
     useEffect(()=>{
@@ -71,6 +81,10 @@ export default function Login() {
                                 <h1 className="text-4xl font-bold">User Login</h1>
                                 <p className="text-gray-600">
                                     Login to see your preferred article, news and settings.
+                                </p>
+
+                                <p className="text-red-500 font-bold">
+                                    {errorMsg}
                                 </p>
                             </div>
 

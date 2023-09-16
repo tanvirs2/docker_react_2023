@@ -81,11 +81,19 @@ export default function NewsAndArticles() {
     }
 
     const filterSourceChange = (e) => {
-        setNewsSourceByUser(e.value)
+        if (e) {
+            setNewsSourceByUser(e.value);
+        } else {
+            setNewsSourceByUser(null);
+        }
     }
 
     const filterAuthorChange = (e) => {
-        setNewsAuthorByUser(e.value)
+        if (e) {
+            setNewsAuthorByUser(e.value);
+        } else {
+            setNewsAuthorByUser(null);
+        }
     }
 
     return (
@@ -202,14 +210,14 @@ export default function NewsAndArticles() {
                                 <p className="text-gray-700 font-bold">
                                     Source :
                                 </p>
-                                <Select options={newsSource} onChange={filterSourceChange}/>
+                                <Select isClearable={true} options={newsSource} onChange={filterSourceChange} />
                             </div>
                             <div placeholder="Username"
                                  className="px-8  w-full py-2 text-gray-700 focus:outline-none items-center">
                                 <p className="text-gray-700 font-bold">
                                     Author :
                                 </p>
-                                <Select options={newsAuthor} onChange={filterAuthorChange}/>
+                                <Select isClearable={true} options={newsAuthor} onChange={filterAuthorChange}/>
                             </div>
                         </>}
 
