@@ -60,10 +60,13 @@ export const AuthProvider = ({ children, href }) => {
         try {
             const {data} = await axiosWithBase.get("/api/user");
             setUser(data);
-            console.log('user: ',data)
+            //console.log('user: ',data)
+
 
         } catch (e){
             setIsLoading(false);
+
+
             console.log('user not logged in')
         }
     };
@@ -80,7 +83,7 @@ export const AuthProvider = ({ children, href }) => {
             await getLoggedUser();
             setIsLoading(false);
 
-            localStorage.setItem('session', 'true')
+
 
             router.push("/news-and-articles")
             return {status: true};
@@ -101,7 +104,6 @@ export const AuthProvider = ({ children, href }) => {
             await getLoggedUser();
             setIsLoading(false);
 
-            localStorage.setItem('session', 'true')
 
             router.push("/news-and-articles")
             return {status: true};
@@ -126,8 +128,6 @@ export const AuthProvider = ({ children, href }) => {
             setIsLoading(false);
 
             router.push("/")
-
-            localStorage.removeItem('session')
 
             setUser(null);
         })

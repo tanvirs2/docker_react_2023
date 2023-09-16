@@ -17,7 +17,7 @@ export default function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const {login, user} = useAuthContext()
+    const {login, user, logout} = useAuthContext()
 
     const router = useRouter();
 
@@ -46,11 +46,10 @@ export default function Login() {
         }
     })
 
-    let session = localStorage.getItem('session') === 'true';
 
     return (
         <>
-            {!session && <main className="flex min-h-screen flex-col items-center justify-between p-24">
+            <main className="flex min-h-screen flex-col items-center justify-between p-24">
 
                 <div
                     className="rounded p-5 bg-gradient-to-r from-cyan-500 to-blue-500 dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert font-bold text-5xl"
@@ -74,8 +73,19 @@ export default function Login() {
                                 Reader Signup
                             </button>
                         </Link>
+                        <br/>
+                        <br/>
+                        {/*<span className="text-red-500 font-bold mt-8 border rounded p-2 cursor-pointer" onClick={()=>{
+                            if (typeof window !== 'undefined') {
+                                // Perform localStorage action
 
-                        <form className="px-4 rounded mx-auto max-w-3xl w-full my-32 inputs space-y-6"
+                                logout();
+                            }
+                        }}>
+                            If login error click here to clear CSRF token and session
+                        </span>*/}
+
+                        <form className="px-4 rounded mx-auto max-w-3xl w-full my-8 inputs space-y-6"
                               onSubmit={handleLogin}>
                             <div>
                                 <h1 className="text-4xl font-bold">User Login</h1>
@@ -172,7 +182,7 @@ export default function Login() {
 
                 <div>&nbsp;</div>
 
-            </main>}
+            </main>
         </>
     );
 }

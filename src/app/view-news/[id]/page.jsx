@@ -2,7 +2,7 @@
 
 import {useParams} from "next/navigation";
 import {useEffect, useState} from "react";
-import {axiosWithBase} from "../../../../../utils";
+import {axiosWithBase} from "../../../../utils";
 
 export default function ViewNews(){
 

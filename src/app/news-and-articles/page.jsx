@@ -233,7 +233,7 @@ export default function NewsAndArticles() {
 
                 {newsAndArticles.map(({id, title, author, img, short_description, category, source, publish_date}, index) => {
                     return (
-                        <Link href={`/news-and-articles/view-news/${id}`} key={index}>
+                        <Link href={`/view-news/${id}`} key={index}>
                             <div className="rounded overflow-hidden shadow-lg">
                                 <img className="w-full" src={img ?? 'https://placehold.co/600x400?text=No%20Image'} alt="Mountain"/>
                                 <div className="px-6 py-4">
