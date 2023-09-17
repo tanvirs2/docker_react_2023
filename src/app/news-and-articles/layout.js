@@ -4,6 +4,7 @@ import Link from "next/link";
 import useAuthContext from "../../context/AuthContext";
 import {useEffect} from "react";
 import {useRouter} from "next/navigation";
+import {axiosWithBase} from "../../../utils";
 
 
 const Header = () => {
@@ -31,6 +32,17 @@ const Header = () => {
               <p className="text-2xl">News Aggregator</p>
             </Link>
           </div>
+
+          <div className="mr-auto md:w-48 flex-shrink-0" onClick={()=>{
+            (async ()=>{
+              await axiosWithBase.get("/fetch-for-today");
+            })()
+          }}>
+            <Link href="/">
+              <p className="text-xs text-blue-600 border rounded p-1 text-center">Fetch Articles</p>
+            </Link>
+          </div>
+
           {/* search */}
 
           {/* phone number */}
